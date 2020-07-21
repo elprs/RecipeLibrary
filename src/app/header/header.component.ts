@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, Output } from '@angular/core';
 
 
 
@@ -12,6 +12,7 @@ export class HeaderComponent{
   collapsed = true;
   @Output() featureSelected = new EventEmitter<string>();
   // @output makes it listenable from outside this component
+  // from the paretnt component
 
   onSelect(feature: string){
     this.featureSelected.emit(feature);

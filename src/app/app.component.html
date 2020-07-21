@@ -1,6 +1,7 @@
 <div>
   <app-header (featureSelected)="onNavigate($event)" ></app-header>
-  <!-- // $event : get access to any event data
+  <!-- // $event : get access to any event data we pass, always referes to the event data
+    //it can also have more parameters in:
   it could be like that: app-header (featureSelected)="onNavigate('recipe', $event)"
   -->
 </div>
@@ -9,6 +10,8 @@
   <div class="row">
     <div class="col-md-12">
       <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>
+      <!-- app-recipes should be appearing if recipe is active
+      in any other case the shopping list will appera -->
       <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list>
     </div>
   </div>
