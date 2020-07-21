@@ -7,7 +7,9 @@ import { Recipe } from './recipe.model';
   styleUrls: ['./recipes.component.css']
 })
 export class RecipesComponent implements OnInit {
-selectedRecipe: Recipe;
+selectedRecipe: Recipe; // we do that bacause we want to store it as a property
+                        // initislly id empty because we assign no value here
+                        // but we assign a value when the event listener is placed
   constructor() { }
 
   ngOnInit(): void {
