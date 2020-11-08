@@ -1,5 +1,6 @@
 import { Ingredient } from './../../shared/ingredient.model';
 import { Component, OnInit, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
+import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -16,9 +17,9 @@ export class ShoppingEditComponent implements OnInit {
   // ingredientAdded = new EventEmitter<{name: string, amount: string}>();
   // it accepts in the <>  a type definition , meaning a JS object. Since we have
   // already the type we use straight the Ingredient model:
-  @Output() ingredientAdded = new EventEmitter<Ingredient>();
+  // @Output() ingredientAdded = new EventEmitter<Ingredient>();
 
-  constructor() { }
+  constructor( private slService: ShoppingListService) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +29,8 @@ export class ShoppingEditComponent implements OnInit {
     const ingredientName = this.nameInputRef.nativeElement.value;
     const ingredientAmount = this.amountInputRef.nativeElement.value;
     const newIngredient = new Ingredient(ingredientName, ingredientAmount );
+    this.slService.addIngredient(newIngredient);
     // I emit the new event and pass the newIngredient as data
-    this.ingredientAdded.emit(newIngredient);
+    // this.ingredientAdded.emit(newIngredient); I dont need to do that because
   }
 }
