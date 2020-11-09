@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { Ingredient } from './../shared/ingredient.model';
 import { Component, OnInit } from '@angular/core';
 import { ShoppingListService } from './shopping-list.service';
@@ -22,6 +23,13 @@ export class ShoppingListComponent implements OnInit {
     )
   }
 
+onEditItem(index : number){
+  this.shoppingListService.startedEditing.next(index);
+}
+
+  // ngOnDestroy(){
+  //   this.subscription.unsubscribe();
+  // }
   // onIngredientAdded(ingredient: Ingredient) {
   //   this.ingredients.push(ingredient);
   // } we dont need this, we will do this in the service
