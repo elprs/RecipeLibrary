@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  @ViewChild('f)') slForm : NgForm;
+  @ViewChild('f') slForm : NgForm;
   subscription : Subscription;
   editMode = false;
   editedItemIndex: number;
@@ -44,17 +44,35 @@ export class ShoppingEditComponent implements OnInit {
     );
   }
 
-  onAddItem(form : NgForm){
+  onSubmitItem(form : NgForm){
     const value = form.value;
     // they will be assigned only one time
     // const ingredientName = this.nameInputRef.nativeElement.value;
     // const ingredientAmount = this.amountInputRef.nativeElement.value;
     const newIngredient = new Ingredient(value.name, value.amount );
-    this.slService.addIngredient(newIngredient);
+
+    if(this.editMode)
+    {
+      this.slService.updateIngredient(this.editedItemIndex, newIngredient)
+    }
+    else{
+      this.slService.addIngredient(newIngredient);
+    }
+    this.editMode = false;
+    form.reset();
     // I emit the new event and pass the newIngredient as data
     // this.ingredientAdded.emit(newIngredient); I dont need to do that because
   }
+    onClear(){
+      this.slForm.reset();
+      this.editMode = false;
+    }
 
+    onDelete(){
+      this.slService.deleteIngredient(this.editedItemIndex);
+      this.onClear()
+
+    }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.

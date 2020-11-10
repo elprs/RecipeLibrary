@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-btn navbar-collapse" style="background-color: antiquewhite;">
   <div class="container-fluid">
   <div class="navbar-header">
     <button class="navbar-toggle" type="button" (click)="collapsed = !collapsed">
@@ -12,9 +12,8 @@
         <li><a href="#" (click)="onSelect('recipe')">Recipes</a></li>
         <li><a href="#" (click)="onSelect('shopping-list')">Shopping list</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown"
-                  appDropDown>
+      <ul class="nav navbar-nav ">
+        <li class="dropdown" appDropDown>
           <a href="#" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Save data</a></li>

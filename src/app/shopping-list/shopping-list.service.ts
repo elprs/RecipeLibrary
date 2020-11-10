@@ -30,6 +30,17 @@ export class ShoppingListService{
     this.ingredients.push(...ingredients); // ... => spred operator : makes an array to list of single ingredients
     this.ingredientsChanged.emit(this.ingredients.slice()); // pass a cory
     }
+
+    updateIngredient(index: number, newIngredient: Ingredient){
+        this.ingredients[index] = newIngredient;
+        this.ingredientsChanged.next(this.ingredients.slice());
+    }
+
+    deleteIngredient(index: number){
+      this.ingredients.splice(index, 1);
+      this.ingredientsChanged.next(this.ingredients.slice());
+
+    }
   }
 
 
