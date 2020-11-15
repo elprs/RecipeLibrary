@@ -9,10 +9,11 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12" style="background-color:orange; font-size: large;">
-      <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>
-      <!-- app-recipes should be appearing if recipe is active
-      in any other case the shopping list will appera -->
-      <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list>
+      <!-- <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>
+      < app-recipes should be appearing if recipe is active
+      in any other case the shopping list will appera
+      <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list> -->
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
