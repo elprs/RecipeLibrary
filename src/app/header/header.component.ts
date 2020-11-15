@@ -10,13 +10,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })// a component is just a ts class, needs an identifier and a decorator
 export class HeaderComponent{
   collapsed = true;
-  @Output() featureSelected = new EventEmitter<string>();
+  // @Output() featureSelected = new EventEmitter<string>();
   // @output makes it listenable from outside this component
   // from the paretnt component
 
-  onSelect(feature: string){
-    this.featureSelected.emit(feature);
-    // use this property to emit an event whenever we click the buttons
-  }
+  // onSelect(feature: string){
+  //   this.featureSelected.emit(feature);
+  //   // use this property to emit an event whenever we click the buttons
+  // }
 
 }

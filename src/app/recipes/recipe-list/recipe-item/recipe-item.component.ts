@@ -10,6 +10,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class RecipeItemComponent implements OnInit {
   @Input() recipe: Recipe;
+@Input() index: number;
+
   // the issue was that we didnt have the recipe-item component
   // anymore. so we added the recipe which is the recipe of that
   // single item-component
@@ -28,18 +30,18 @@ export class RecipeItemComponent implements OnInit {
   // emit() emit an event contiaining a given value
   // it is  void cause it contains/passes no info
 
-  @Output() recipeSelected = new EventEmitter<void>();
+  // @Output() recipeSelected = new EventEmitter<void>();
 
-  constructor(private recipeService: RecipeService) {}
+  // constructor(private recipeService: RecipeService) {}
 
   ngOnInit(): void {}
 
-  onSelected() {
-    // this.recipeSelected.emit();
-    // I implement and emit my own event
-    // I trigger the recipeSelected first
-    //insted:
-    this.recipeService.recipeSelected.emit(this.recipe);
+  // onSelected() {
+  //   // this.recipeSelected.emit();
+  //   // I implement and emit my own event
+  //   // I trigger the recipeSelected first
+  //   //insted:
+  //   this.recipeService.recipeSelected.emit(this.recipe);
 
-  }
+  // }
 }

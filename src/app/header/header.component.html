@@ -9,15 +9,17 @@
   <div class="navbar-collapse" [class.collapse]="collapsed"
   (window:resize)="collapsed=true">
       <ul class="nav navbar-nav">
-        <li><a href="#" (click)="onSelect('recipe')">Recipes</a></li>
-        <li><a href="#" (click)="onSelect('shopping-list')">Shopping list</a></li>
+        <!-- <li><a href="#" (click)="onSelect('recipe')">Recipes</a></li>
+        <li><a href="#" (click)="onSelect('shopping-list')">Shopping list</a></li> -->
+        <li routerLinkActive="active"><a routerLink="/recipes">recipes</a></li>
+        <li routerLinkActive="active"><a routerLink="/shopping-list">shopping list</a></li>
       </ul>
       <ul class="nav navbar-nav ">
         <li class="dropdown" appDropDown>
-          <a href="#" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <a style="cursor: pointer;" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Save data</a></li>
-            <li><a href="#">Fetch data</a></li>
+            <li><a style="cursor:pointer;">Save data</a></li>
+            <li><a style="cursor:pointer;">Fetch data</a></li>
           </ul>
         </li>
       </ul>
