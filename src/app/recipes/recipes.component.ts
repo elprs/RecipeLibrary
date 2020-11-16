@@ -12,16 +12,18 @@ export class RecipesComponent implements OnInit {
 selectedRecipe: Recipe; // we do that bacause we want to store it as a property
                         // initislly id empty because we assign no value here
                         // but we assign a value when the event listener is placed
-  constructor(private recipeService : RecipeService) { }
+  // constructor(private recipeService : RecipeService) { }
+  constructor(){}
 
   ngOnInit(): void {
-    this.recipeService.recipeSelected
-        .subscribe(
-          (recipe : Recipe) => {
-            this.selectedRecipe = recipe;
+  //   this.recipeService.recipeSelected
+  //       .subscribe(
+  //         (recipe : Recipe) => {
+  //           this.selectedRecipe = recipe;
 
-          }
-        );
-  }
+  //         }
+  //       );
+  // }
 
+}
 }

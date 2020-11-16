@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'RecipeLibrary';
-  loadedFeature = 'recipe'; // we need to store it with the name we have in html
+  // loadedFeature = 'recipe'; // we need to store it with the name we have in html
 
-  onNavigate(feature: string){
-    this.loadedFeature = feature; // I could emit this method
-  }
+  // onNavigate(feature: string){
+  //   this.loadedFeature = feature; // I could emit this method
+  // }
 }

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { Ingredient } from './../shared/ingredient.model';
 import { Component, OnInit } from '@angular/core';
@@ -10,22 +11,29 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent implements OnInit {
   ingredients: Ingredient[] = [];
+  private subscription : Subscription;
 
   constructor(private shoppingListService : ShoppingListService) {}
 
   ngOnInit(): void { // here I will have all my initialiasations & heavy lifting
     this.ingredients = this.shoppingListService.getIngredients();
-    this.shoppingListService.ingredientsChanged
+    this.subscription = this.shoppingListService.ingredientsChanged
       .subscribe(
-      (ingredients: Ingredient[]) => {
+       (ingredients: Ingredient[]) => {
           this.ingredients = ingredients;
       }
     )
   }
 
-onEditItem(index : number){
-  this.shoppingListService.startedEditing.next(index);
-}
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscription.unsubscribe();
+  }
+
+// onEditItem(index : number){
+//   this.shoppingListService.startedEditing.next(index);
+// }
 
   // ngOnDestroy(){
   //   this.subscription.unsubscribe();
