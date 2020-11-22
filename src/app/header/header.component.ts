@@ -1,3 +1,4 @@
+import { DataStorageService } from './../shared/data-storage.service';
 import { Component, EventEmitter, Output } from '@angular/core';
 
 
@@ -18,5 +19,14 @@ export class HeaderComponent{
   //   this.featureSelected.emit(feature);
   //   // use this property to emit an event whenever we click the buttons
   // }
+constructor(private dataStarageService: DataStorageService){}
+
+  onSaveData(){
+    this.dataStarageService.storeRecipes();
+  }
+  onFetchRecipes(){
+    this.dataStarageService.fetchRecipes().subscribe();
+  }
+
 
 }
