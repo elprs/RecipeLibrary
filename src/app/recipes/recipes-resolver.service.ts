@@ -10,10 +10,20 @@ import { Observable } from 'rxjs';
 ({providedIn: 'root'})
 export
 class RecipesResolverService implements Resolve<Recipe[]>{
-  constructor(private dataStorageService : DataStorageService) {}
+  constructor(private dataStorageService : DataStorageService, private RecipeService : ResipeService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-   return this.dataStorageService.fetchRecipes();
+    const recipes = this.RecipeService.getRecipes()l
+
+    if (recipes.length === 0 ){
+      return this.dataStorageService.fetchRecipes();
+    }
+    else
+    {
+      return recipes;
+    }
+
+    return this.dataStorageService.fetchRecipes();
   }
 }
 
