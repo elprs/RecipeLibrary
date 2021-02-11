@@ -120,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "RecipeLibrary"
+    }
+  },
+  "defaultProject": "RecipeLibrary",
+  "cli": {
+    "analytics": false
+  }
 }
