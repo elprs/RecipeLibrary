@@ -1,5 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { catchError } from "rxjs/operators";
+import{throwError} from 'rxjs';
+
 
 
 
@@ -31,7 +34,23 @@ export class AuthService
         returnSecureToken: true
       }
 
-    );
+    ).pipe(catchError(errorRes => {
+      let errorMessage = 'An unknown error occurred.'; // initiate it in case we cannot identify any error
+      if(!errorRes.error || !errorRes.error.error){ // the switch will fail in the case that we have errow with different format, eg a network error.  thus we check with the if
+        //we throw an observable that in the end wraps that message
+        return throwError(errorMessage);
+      }
+      else{
+        switch(errorRes.error.error.message){
+          case 'EMAIL_EXISTS':
+            errorMessage= 'This email exists.';
+
+        }
+        return throwError(errorMessage);
+      }
+
+
+    }));
 
   }
 }
