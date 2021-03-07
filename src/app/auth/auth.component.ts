@@ -1,61 +1,55 @@
-import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+
 import { AuthService, AuthResponseData } from './auth.service';
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.component.html',
+  templateUrl: './auth.component.html'
 })
 export class AuthComponent {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-    ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
+
   onSubmit(form: NgForm) {
     if (!form.valid) {
-      alert('This form is not valid');
       return;
     }
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs = new Observable<AuthResponseData>();
+    let authObs: Observable<AuthResponseData>;
 
-    // here is before the request, thus we can put  the loading spinner to start by setting true the isLoading
     this.isLoading = true;
+
     if (this.isLoginMode) {
-      //Log in the user
-      authObs = this.authService.logIn(email, password);
+      authObs = this.authService.login(email, password);
     } else {
-      //subscribe the user
-      authObs = this.authService.signup(email, password, true);
+      authObs = this.authService.signup(email, password);
     }
 
     authObs.subscribe(
-      (resData) => {
+      resData => {
         console.log(resData);
         this.isLoading = false;
         this.router.navigate(['/recipes']);
       },
-      (errorMessage) => {
-        // an observable with the error message returning from the authService dince we subscribed
-        //So we know that we get the error message here as a data point, but more importanly we can assign it to the this.error
+      errorMessage => {
         console.log(errorMessage);
         this.error = errorMessage;
         this.isLoading = false;
       }
     );
+
     form.reset();
   }
 }

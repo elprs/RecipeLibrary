@@ -1,9 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, tap, timeout } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
-import { User } from './user.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, BehaviorSubject } from 'rxjs';
+
+import { User } from './user.model';
 
 export interface AuthResponseData {
   kind: string;
@@ -14,31 +15,27 @@ export interface AuthResponseData {
   localId: string;
   registered?: boolean;
 }
-let authObs = new Observable<AuthResponseData>();
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user = new BehaviorSubject<User>(null); // this means when we fetch data and we need that token at this point of time, even if the user logged
-  //in before that point of time which will have been the case, we get access to that latest user.
-  token: string = null;
-  private tokenExpirationTimer : any;
-
+  user = new BehaviorSubject<User>(null);
+  private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(email: string, password: string, returnSecureToken: boolean) {
+  signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBvfEjBFiVlPGSCst5I-G5YvzwBQxzScSg',
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDb0xTaRAoxyCgvaDF3kk5VYOsTwB_3o7Y',
         {
           email: email,
           password: password,
-          returnSecureToken: true,
+          returnSecureToken: true
         }
       )
       .pipe(
         catchError(this.handleError),
-        tap((resData) => {
+        tap(resData => {
           this.handleAuthentication(
             resData.email,
             resData.localId,
@@ -49,20 +46,30 @@ export class AuthService {
       );
   }
 
-  logIn(email: string, password: string) {
+  login(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvfEjBFiVlPGSCst5I-G5YvzwBQxzScSg',
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDb0xTaRAoxyCgvaDF3kk5VYOsTwB_3o7Y',
         {
           email: email,
           password: password,
-          returnSecureToken: true,
+          returnSecureToken: true
         }
       )
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
   }
 
-  autoLogIn() {
+  autoLogin() {
     const userData: {
       email: string;
       id: string;
@@ -82,53 +89,28 @@ export class AuthService {
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
-
-      //expiration duration is basically this timestamp here
-      //so the token expiration date wrapped into a date in milliseconds which we get by calling get time, minus the current timestamp which we get with new date, in milliseconds with get time.
-      const expirationDuration =  new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
-      this.autoLogOut(expirationDuration);
+      const expirationDuration =
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
+      this.autoLogout(expirationDuration);
     }
   }
 
-  logOut() {
+  logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
-    if(this.tokenExpirationTimer)
-    {
+    if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
-
     this.tokenExpirationTimer = null;
   }
 
-  autoLogOut(expirationDuration: number) {
-    this.tokenExpirationTimer =     setTimeout(() => {
-      this.logOut();
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
     }, expirationDuration);
-  };
-
-  private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred.'; // initiate it in case we cannot identify any error
-    if (!errorRes.error || !errorRes.error.error) {
-      // the switch will fail in the case that we have errow with different format, eg a network error.  thus we check with the if
-      //we throw an observable that in the end wraps that message
-      return throwError(errorMessage);
-    } else {
-      switch (errorRes.error.error.message) {
-        case 'EMAIL_EXISTS':
-          errorMessage = 'This email exists.';
-          break;
-        case 'EMAIL_NOT_FOUND':
-          errorMessage = 'This email does not exist';
-          break;
-        case 'INVALID_PASSWORD':
-          errorMessage = 'This password is invalid';
-          break;
-      }
-      return throwError(errorMessage);
-    }
-  };
+  }
 
   private handleAuthentication(
     email: string,
@@ -136,10 +118,29 @@ export class AuthService {
     token: string,
     expiresIn: number
   ) {
-    const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
-    this.autoLogOut(expiresIn * 1000); // times 1000 gives us the amount in milliseconds.
+    this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  private handleError(errorRes: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (!errorRes.error || !errorRes.error.error) {
+      return throwError(errorMessage);
+    }
+    switch (errorRes.error.error.message) {
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct.';
+        break;
+    }
+    return throwError(errorMessage);
   }
 }
