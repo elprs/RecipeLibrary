@@ -13,19 +13,3 @@
     </app-recipe-item>
   </div>
 </div>
-
-<!-- With ngFor above the whole component is replicated
-for each recipe-->
-
-<!-- property binding:
-  [recipe] = "recipeElement"
-we bind to the property recipe of the component to the current
-iteration (recipeElement)
-we pass the recipeElement as a value from the right to the left -->
-
-<!-- We implement the recipeSelected="onRecipeSelected"
-in recipeSelected we are already in the ngFor which means that we know which
-current recipe is there.
-We also need to agian emit an event. we ahve to go up one level . cause we want tp
-reach our recipes component
- -->

@@ -1,31 +1,8 @@
-<div class="row" style="background-color: olivedrab; min-height: 300px;">
-
+<div class="row">
   <div class="col-md-5">
-    <app-recipe-list>    </app-recipe-list>
-  </div>
-
-  <div class="col-md-5">
-    <app-recipe-edit></app-recipe-edit>
+    <app-recipe-list></app-recipe-list>
   </div>
   <div class="col-md-7">
-    <!-- <app-recipe-detail
-      *ngIf="selectedRecipe; else infoText"
-      [recipe]="selectedRecipe"
-      >
-    </app-recipe-detail>
-
-    <ng-template #infoText>
-      <p>Please select a recipe</p>
-    </ng-template> -->
     <router-outlet></router-outlet>
   </div>
 </div>
-
-<!-- Want to click on a single item (recipeElement) and load it on the detail section
-1. emit an event on the single recipe-item.component.html that it was clicked
-2. get this event to the recipes-component somehow
-3. this holds the recipe-detail.component
-4 . to pass down the event data  (which recipe was selected) to thst component
--->
-
-<!-- Try no tot put logic in teh template, like in line 3  -->
