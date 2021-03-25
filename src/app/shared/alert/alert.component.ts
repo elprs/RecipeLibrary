@@ -11,6 +11,6 @@ import { EventEmitter } from "events";
     @Output()  close  = new EventEmitter();
 
     onClose(){
-      this.close.emit(null);
+      this.close.emit("");
     }
   }
