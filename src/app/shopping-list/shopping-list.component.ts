@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Ingredient } from './../shared/ingredient.model';
 import { Component, OnInit } from '@angular/core';
 import { ShoppingListService } from './shopping-list.service';
+import { LoggingService } from '../logging.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -13,7 +14,8 @@ export class ShoppingListComponent implements OnInit {
   ingredients: Ingredient[] = [];
   private subscription : Subscription;
 
-  constructor(private shoppingListService : ShoppingListService) {}
+  constructor(private shoppingListService : ShoppingListService,
+    private loggingSrv :LoggingService) {}
 
   ngOnInit(): void { // here I will have all my initialiasations & heavy lifting
     this.ingredients = this.shoppingListService.getIngredients();
@@ -22,7 +24,8 @@ export class ShoppingListComponent implements OnInit {
        (ingredients: Ingredient[]) => {
           this.ingredients = ingredients;
       }
-    )
+    );
+    this.loggingSrv.printLog('hello form shoppingListComponent ngOnInit')
   }
 
   ngOnDestroy(): void {
