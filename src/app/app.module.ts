@@ -1,38 +1,29 @@
-import { AuthComponent } from './auth/auth.component';
-import { RecipeService } from './recipes/recipe.service';
 import { AppRoutingModule } from './app-routing.module';
-import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptorService } from './auth/auth.interceptor.service';
-import { RecipesModule } from './recipes/recipes.module';
-import { ShoppingModule } from './shopping-list/shopping.module';
 import { SharedModule } from './shared/shared.module';
-
+import { HttpClientModule } from '@angular/common/http';
+import { CoreModule } from './core.module';
 
 @NgModule({
   declarations: [
     // register all the featutes I introduce
     AppComponent,
     HeaderComponent,
-    AuthComponent,
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    RecipesModule,
-    ShoppingModule,
-    SharedModule
-
+    SharedModule,
+    CoreModule,
+    //authModula and all the lazy loaded modules are not imported here to avoid eager loading that will happen anyway
+    //if we let them here or on the import above, although the lazy loading would also take place
+    
   ],
-  providers: [ShoppingListService, RecipeService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
-  bootstrap: [AppComponent]
+
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -6,7 +6,7 @@ import { SharedModule } from "../shared/shared.module";
 import { ShoppingEditComponent } from "./shopping-edit/shopping-edit.component";
 import { ShoppingListComponent } from "./shopping-list.component";
 
-const routes =   [ { path: 'shopping-list', component: ShoppingListComponent } ];
+const routes =   [ { path: '', component: ShoppingListComponent } ];
 
 
 
